@@ -1,0 +1,24 @@
+{
+  "name": "bb-blossom-ai",
+  "version": "1.0.0",
+  "description": "",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/briannab1997/bb-blossom-ai.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/briannab1997/bb-blossom-ai/issues"
+  },
+  "homepage": "https://github.com/briannab1997/bb-blossom-ai#readme",
+  "dependencies": {
+    "openai": "^6.10.0"
+  }
+}
