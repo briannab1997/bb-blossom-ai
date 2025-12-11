@@ -1,0 +1,21 @@
+<svg width="130" height="130" viewBox="0 0 130 130" xmlns="http://www.w3.org/2000/svg">
+  <!-- face -->
+  <circle cx="65" cy="65" r="55" fill="#ffb6d9"></circle>
+
+  <!-- eyes -->
+  <circle cx="45" cy="60" r="14" fill="white"></circle>
+  <circle cx="85" cy="60" r="14" fill="white"></circle>
+  <circle cx="45" cy="60" r="6" fill="#333"></circle>
+  <circle cx="85" cy="60" r="6" fill="#333"></circle>
+
+  <!-- bow -->
+  <path d="M30 30 Q65 5 100 30 Q65 15 30 30" fill="#ff7cb8"></path>
+  <circle cx="65" cy="28" r="10" fill="#ff5da8"></circle>
+
+  <!-- blush -->
+  <ellipse cx="40" cy="78" rx="10" ry="5" fill="#ff82c2" opacity="0.5"></ellipse>
+  <ellipse cx="90" cy="78" rx="10" ry="5" fill="#ff82c2" opacity="0.5"></ellipse>
+
+  <!-- smile -->
+  <path d="M50 85 Q65 95 80 85" stroke="#333" stroke-width="3" fill="none"></path>
+</svg>

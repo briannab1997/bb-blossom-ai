@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BlossomAI</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <div class="bubble-bg"></div>
+
+    <div class="top-bar">
+      <div class="top-buttons">
+        <button id="clearChat">🧹 Clear</button>
+        <button id="darkToggle">🌙</button>
+      </div>
+    </div>
+
+    <div class="app-container">
+      <div class="header">
+        <div class="emoji-avatar">🙆🏾‍♀️🩷</div>
+        <h1>Hi, I'm BlossomAI</h1>
+        <p class="tagline">your sassy relational sidekick!</p>
+      </div>
+
+      <div class="tone-wheel">
+        <div class="wheel-option active" data-tone="soft">🌸 Soft</div>
+        <div class="wheel-option" data-tone="sassy">🔥 Sassy</div>
+        <div class="wheel-option" data-tone="pro">💼 Pro</div>
+      </div>
+
+      <div class="chat-box" id="chatBox"></div>
+
+      <div class="typing-indicator hidden" id="typingIndicator">
+        <span></span><span></span><span></span>
+      </div>
+
+      <div class="input-area">
+        <input
+          type="text"
+          id="userInput"
+          placeholder="Talk to Blossom…"
+          autocomplete="off"
+        />
+        <button id="sendBtn">Send</button>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
