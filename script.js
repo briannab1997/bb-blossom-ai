@@ -327,7 +327,10 @@ async function streamReply() {
 
   } catch (err) {
     typing.classList.add("hidden");
-    var errBubble = renderMessage("Oops! Something went wrong. Try again? 🌸", "blossom");
+    var errMsg = err && err.message && err.message.includes("Failed to fetch")
+      ? "Hmm, I can't reach the server right now. If you're running locally, make sure to use `vercel dev` instead of a static file server 🌸"
+      : "Oops! Something went wrong on my end — try sending that again? 🌸";
+    var errBubble = renderMessage(errMsg, "blossom");
     console.error("[BlossomAI]", err);
   } finally {
     state.isStreaming = false;

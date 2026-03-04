@@ -353,8 +353,12 @@ body.dark .tone-btn:hover {
 /* ── Prompt chips ────────────────────────────────────────── */
 .prompts-grid {
   display: grid; grid-template-columns: repeat(2, 1fr);
-  gap: 9px; width: 100%; max-width: 500px; margin-top: 6px;
+  gap: 9px; width: 100%; max-width: 520px; margin-top: 6px;
+  max-height: 260px; overflow-y: auto;
+  padding-right: 2px;
 }
+.prompts-grid::-webkit-scrollbar { width: 3px; }
+.prompts-grid::-webkit-scrollbar-thumb { background: var(--pink-200); border-radius: 3px; }
 .prompt-chip {
   padding: 12px 14px; border-radius: var(--radius-md);
   background: var(--bg-surface); border: 1px solid var(--glass-border);
