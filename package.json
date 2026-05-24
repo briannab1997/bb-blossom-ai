@@ -4,7 +4,7 @@
   "description": "",
   "main": "script.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "vercel dev"
   },
   "repository": {
     "type": "git",
@@ -17,7 +17,7 @@
   "bugs": {
     "url": "https://github.com/briannab1997/bb-blossom-ai/issues"
   },
-  "homepage": "https://github.com/briannab1997/bb-blossom-ai#readme",
+  "homepage": "https://briannab1997.github.io/bb-blossom-ai/",
   "dependencies": {
     "openai": "^6.10.0"
   }

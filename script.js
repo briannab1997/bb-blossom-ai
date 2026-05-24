@@ -288,6 +288,20 @@ function send() {
   streamReply();
 }
 
+function isStaticDemoHost() {
+  return window.location.hostname.endsWith("github.io");
+}
+
+function demoReply() {
+  return [
+    "This GitHub Pages version is running in demo mode, so the live chat API is not connected here.",
+    "",
+    "The full version is designed to run with a Vercel serverless function, streaming responses, saved sessions, export tools, voice input, and tone switching.",
+    "",
+    "You can still explore the interface, try the tone modes, use prompt chips, save local sessions, and review the project structure on GitHub."
+  ].join("\n");
+}
+
 // ── Stream reply ───────────────────────────────────────────────
 async function streamReply() {
   state.isStreaming = true;
@@ -296,6 +310,14 @@ async function streamReply() {
   scrollToBottom();
 
   try {
+    if (isStaticDemoHost()) {
+      typing.classList.add("hidden");
+      var demo = demoReply();
+      renderMessage(demo, "blossom");
+      state.messages.push({ role: "assistant", content: demo });
+      return;
+    }
+
     var response = await fetch("/api/blossom", {
       method: "POST",
       headers: { "Content-Type": "application/json" },

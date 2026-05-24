@@ -4,6 +4,10 @@ A conversational AI companion with a warm, adaptive personality. BlossomAI helps
 
 > **Status:** Early stage · Actively developed
 
+Live interface demo: https://briannab1997.github.io/bb-blossom-ai/
+
+The GitHub Pages version runs as a static interface demo. The full chat API is built for Vercel Serverless Functions and requires `OPENAI_API_KEY`.
+
 ---
 
 ## What Blossom Can Help With
