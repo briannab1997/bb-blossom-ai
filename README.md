@@ -8,6 +8,14 @@ Live interface demo: https://briannab1997.github.io/bb-blossom-ai/
 
 The GitHub Pages version runs as a static interface demo. The full chat API is built for Vercel Serverless Functions and requires `OPENAI_API_KEY`.
 
+## Screenshot
+
+![BlossomAI chat interface](assets/blossomai.png)
+
+## Why This Project
+
+BlossomAI is a product-focused chat interface project. I built it to practice real-time chat UX, conversation state, local session history, tone switching, export tools, responsive layout, and serverless API structure. The static demo shows the interface and interaction model, while the Vercel setup supports the full API-backed version.
+
 ---
 
 ## What Blossom Can Help With
