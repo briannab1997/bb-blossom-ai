@@ -6,7 +6,7 @@ A conversational chat companion with a warm, adaptive personality. BlossomAI hel
 
 Live interface demo: https://briannab1997.github.io/bb-blossom-ai/
 
-The GitHub Pages version now includes a mock response engine, so visitors can actually test the chat experience without using a paid API key. The full API-backed version is still built for Vercel Serverless Functions and uses `OPENAI_API_KEY` when deployed with one.
+The GitHub Pages version now includes a mock response engine, so visitors can test the chat experience directly from the live demo. The full API-backed version is still built for Vercel Serverless Functions and uses `OPENAI_API_KEY` when deployed with one.
 
 ## Screenshot
 
