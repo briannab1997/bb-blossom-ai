@@ -283,15 +283,10 @@ body[data-api-mode="live"] .api-badge {
   padding: 24px 18px 12px;
   display: flex; flex-direction: column;
   scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
-.chat-main::-webkit-scrollbar { width: 4px; }
-.chat-main::-webkit-scrollbar-track { background: transparent; }
-.chat-main::-webkit-scrollbar-thumb {
-  background: var(--pink-200); border-radius: 4px;
-}
-body.dark .chat-main::-webkit-scrollbar-thumb {
-  background: rgba(200, 100, 200, 0.25);
-}
+.chat-main::-webkit-scrollbar { display: none; }
 
 /* ── Hero ────────────────────────────────────────────────── */
 .hero {
@@ -431,9 +426,10 @@ body.dark .workflow-btn:hover {
   gap: 9px; width: 100%; max-width: 520px; margin-top: 6px;
   max-height: 260px; overflow-y: auto;
   padding-right: 2px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
-.prompts-grid::-webkit-scrollbar { width: 3px; }
-.prompts-grid::-webkit-scrollbar-thumb { background: var(--pink-200); border-radius: 3px; }
+.prompts-grid::-webkit-scrollbar { display: none; }
 .prompt-chip {
   padding: 12px 14px; border-radius: var(--radius-md);
   background: var(--bg-surface); border: 1px solid var(--glass-border);
