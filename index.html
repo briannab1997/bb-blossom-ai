@@ -9,14 +9,7 @@
     <link rel="stylesheet" href="style.css" />
   </head>
 
-  <body>
-    <!-- Animated orb background -->
-    <div class="bg-canvas" aria-hidden="true">
-      <div class="orb orb-1"></div>
-      <div class="orb orb-2"></div>
-      <div class="orb orb-3"></div>
-    </div>
-
+  <body class="dark" data-tone="soft">
     <!-- Sidebar backdrop (mobile tap-to-close) -->
     <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 
@@ -66,6 +59,7 @@
           <div class="brand">
             <img src="blossomIcon.svg" alt="" class="brand-icon" />
             <span>BlossomAI</span>
+            <span class="api-badge" id="apiModeBadge">Demo mode</span>
           </div>
         </div>
         <div class="top-right">
@@ -109,7 +103,12 @@
             <div class="status-dot" aria-hidden="true"></div>
           </div>
           <h1>Hi, I'm BlossomAI</h1>
-          <p class="tagline">your sassy relational sidekick ✨</p>
+          <p class="tagline">a warm, quick-thinking chat companion for career moves, life stuff, habits, and hard decisions.</p>
+
+          <div class="demo-callout" id="demoCallout">
+            <span class="demo-dot" aria-hidden="true"></span>
+            <span>Portfolio demo is active, so you can try the chat without using a paid API key.</span>
+          </div>
 
           <!-- Tone selector -->
           <div class="tone-selector" role="group" aria-label="Select conversation tone">
@@ -129,6 +128,13 @@
             <button class="prompt-chip" data-prompt="I want to build better habits but I always fall off track">🌱 Building habits</button>
             <button class="prompt-chip" data-prompt="I have a big decision to make and I can't figure out the right choice">🎯 Big decision</button>
             <button class="prompt-chip" data-prompt="How do I manage my money better and start saving more?">💰 Money & finances</button>
+          </div>
+
+          <div class="feature-strip" aria-label="BlossomAI features">
+            <span>Mock demo replies</span>
+            <span>Tone switching</span>
+            <span>Saved sessions</span>
+            <span>Markdown export</span>
           </div>
         </section>
 
