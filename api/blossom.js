@@ -1,4 +1,5 @@
 import OpenAI from "openai";
+import { buildApiMessages, buildSystemPrompt } from "./request-utils.js";
 
 const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -49,25 +50,22 @@ export default async function handler(req, res) {
   if (req.method === "OPTIONS") return res.status(200).end();
   if (req.method !== "POST")   return res.status(405).json({ error: "Method Not Allowed" });
 
-  const { messages, tone = "soft", userName, stream: doStream } = req.body;
+  const { messages, tone = "soft", userName, workflow = "general", stream: doStream } = req.body;
 
   if (!Array.isArray(messages) || messages.length === 0) {
     return res.status(400).json({ error: "messages array is required" });
   }
 
   const persona = PERSONAS[tone] || PERSONAS.soft;
-  const nameContext = userName ? `The user's name is ${userName}. Use it warmly when it feels natural.` : "";
-
-  const systemPrompt = `${SYSTEM_BASE}\nTone: ${persona}\n${nameContext}`.trim();
+  const systemPrompt = buildSystemPrompt({
+    base: SYSTEM_BASE,
+    persona,
+    userName,
+    workflow,
+  });
 
   // Sanitize and cap history
-  const apiMessages = [
-    { role: "system", content: systemPrompt },
-    ...messages.slice(-20).map((m) => ({
-      role: m.role === "user" ? "user" : "assistant",
-      content: String(m.content || "").slice(0, 2000),
-    })),
-  ];
+  const apiMessages = buildApiMessages({ messages, systemPrompt });
 
   try {
     if (doStream) {

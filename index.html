@@ -110,6 +110,11 @@
             <span>Demo mode is active, so you can explore the chat experience right in your browser.</span>
           </div>
 
+          <div class="status-panel" aria-label="Current BlossomAI setup">
+            <span>Current setup</span>
+            <strong id="workflowStatus">Open Chat · Mock demo engine</strong>
+          </div>
+
           <!-- Tone selector -->
           <div class="tone-selector" role="group" aria-label="Select conversation tone">
             <button class="tone-btn active" data-tone="soft" aria-pressed="true">🌸 Soft</button>
@@ -118,9 +123,19 @@
             <button class="tone-btn" data-tone="wise" aria-pressed="false">🌙 Wise</button>
           </div>
 
+          <div class="workflow-selector" role="group" aria-label="Select guided workflow">
+            <button class="workflow-btn active" data-workflow="general" aria-pressed="true">Open Chat</button>
+            <button class="workflow-btn" data-workflow="interview" aria-pressed="false">Interview Prep</button>
+            <button class="workflow-btn" data-workflow="actionPlan" aria-pressed="false">Action Plan</button>
+            <button class="workflow-btn" data-workflow="decision" aria-pressed="false">Decision Brief</button>
+          </div>
+
           <!-- Suggested prompts -->
           <div class="prompts-grid" aria-label="Suggested conversation starters">
             <button class="prompt-chip" data-prompt="I feel stuck in my career and don't know what my next move should be">💼 Career advice</button>
+            <button class="prompt-chip" data-workflow="interview" data-prompt="Help me prepare for an interview. Here is the role or job description: ">🧭 Interview prep</button>
+            <button class="prompt-chip" data-workflow="actionPlan" data-prompt="Turn these messy notes into a clear action plan: ">📝 Notes to plan</button>
+            <button class="prompt-chip" data-workflow="decision" data-prompt="Help me compare this decision and choose my next step: ">⚖️ Decision brief</button>
             <button class="prompt-chip" data-prompt="I've been feeling really overwhelmed and burned out lately">😮‍💨 Feeling burned out</button>
             <button class="prompt-chip" data-prompt="How do I actually stop procrastinating and get things done?">⚡ Beat procrastination</button>
             <button class="prompt-chip" data-prompt="I'm dealing with a difficult person in my life — how do I handle it?">💔 Tough relationship</button>
@@ -132,6 +147,7 @@
 
           <div class="feature-strip" aria-label="BlossomAI features">
             <span>Mock demo replies</span>
+            <span>Guided workflows</span>
             <span>Tone switching</span>
             <span>Saved sessions</span>
             <span>Markdown export</span>
@@ -189,6 +205,6 @@
     <!-- Toast notifications -->
     <div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="true"></div>
 
-    <script src="script.js"></script>
+    <script type="module" src="script.js"></script>
   </body>
 </html>

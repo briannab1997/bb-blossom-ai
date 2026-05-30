@@ -14,7 +14,7 @@ The GitHub Pages version now includes a mock response engine, so visitors can te
 
 ## Why This Project
 
-BlossomAI is a product-focused chat interface project. I built it to practice real-time chat UX, conversation state, local session history, tone switching, export tools, responsive layout, mock/demo behavior, and serverless API structure. I wanted it to feel like something someone could open and use, even from a static portfolio link.
+BlossomAI is a product-focused chat interface project. I built it to practice real-time chat UX, conversation state, local session history, tone switching, export tools, responsive layout, mock/demo behavior, guided prompt workflows, and serverless API structure. I wanted it to feel like something someone could open and use, even from a static portfolio link.
 
 ---
 
@@ -38,12 +38,14 @@ BlossomAI is designed to be a thoughtful, versatile companion. Topics include:
 ## Features
 
 - **Mock demo replies** — GitHub Pages visitors can test the chat without needing a live API
+- **Guided workflows** — focused modes for interview prep, turning notes into action plans, and decision support
 - **Streaming responses** — API-backed deployments stream tokens in real-time (SSE), like a live conversation
+- **API/demo status panel** — shows whether the app is using the serverless API or local demo engine
 - **Conversation memory** — full message history is sent to the API for multi-turn context
 - **4 tone modes** — switch between Soft 🌸, Sassy 🔥, Pro 💼, and Wise 🌙 at any time; the UI accent color shifts with each tone
 - **Session history** — past conversations are saved locally and accessible from the sidebar
 - **Voice input** — speak your message via the Web Speech API (browser permitting)
-- **Export chat** — download any conversation as a `.md` file
+- **Export chat** — download any conversation as a `.md` file with tone, workflow, mode, session, and message metadata
 - **Copy messages** — copy any response to clipboard with one click
 - **Dark-first interface** — deep purple theme is the default, with light mode still available
 - **Keyboard shortcuts** — `⌘K` clear · `⌘D` dark mode · `⌘E` export · `⌘B` sidebar
@@ -57,10 +59,11 @@ BlossomAI is designed to be a thoughtful, versatile companion. Topics include:
 |---|---|
 | Frontend | Vanilla JS, HTML5, CSS3 (no framework) |
 | Demo Logic | Client-side mock response engine |
-| API Option | OpenAI `gpt-4o-mini` via streaming SSE |
+| API Option | OpenAI `gpt-4o-mini` via streaming SSE and workflow-specific system prompts |
 | Backend | Vercel Serverless Functions (`/api/blossom.js`) |
 | Persistence | Browser `localStorage` |
 | Deployment | GitHub Pages for the mock demo; Vercel for API-backed chat |
+| Tests | Node.js `assert` tests for mock replies and API message utilities |
 
 ---
 
@@ -84,6 +87,16 @@ vercel dev
 Then open [http://localhost:3000](http://localhost:3000).
 
 > **Note:** A plain static server will not run `/api/blossom`, but the mock engine keeps the chat usable for portfolio demos.
+
+---
+
+## Tests
+
+```bash
+npm test
+```
+
+The tests cover the mock response engine, workflow detection, API prompt building, history capping, and message sanitization helpers.
 
 ---
 
@@ -112,9 +125,14 @@ Make sure `OPENAI_API_KEY` is set in your Vercel project's Environment Variables
 ```
 ├── index.html        # App shell — layout, sidebar, hero, input
 ├── script.js         # All frontend logic (streaming, sessions, voice, shortcuts)
+├── mock-engine.js    # Demo workflow detection and mock response generation
 ├── style.css         # Design system — CSS variables, glassmorphism, animations
 ├── api/
-│   └── blossom.js    # Serverless function — OpenAI SSE streaming handler
+│   ├── blossom.js    # Serverless function — OpenAI SSE streaming handler
+│   └── request-utils.js
+├── tests/
+│   ├── mock-engine.test.js
+│   └── request-utils.test.js
 ├── blossomIcon.svg   # App icon
 └── vercel.json       # Vercel deployment config
 ```

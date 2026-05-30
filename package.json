@@ -4,7 +4,8 @@
   "description": "",
   "main": "script.js",
   "scripts": {
-    "start": "vercel dev"
+    "start": "vercel dev",
+    "test": "node tests/mock-engine.test.js && node tests/request-utils.test.js"
   },
   "repository": {
     "type": "git",

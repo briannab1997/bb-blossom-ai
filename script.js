@@ -1,3 +1,5 @@
+import { createDemoReply, normalizeWorkflow, WORKFLOWS } from "./mock-engine.js";
+
 // ============================================================
 // BlossomAI — Main Script
 // ============================================================
@@ -11,6 +13,7 @@ var state = {
   sessions: [],
   currentSessionId: null,
   apiMode: "demo",
+  workflow: "general",
 };
 
 var TONE_LABELS = { soft: "Soft", sassy: "Sassy", pro: "Pro", wise: "Wise" };
@@ -28,6 +31,7 @@ var sidebar    = document.getElementById("sidebar");
 var chatHistory= document.getElementById("chatHistory");
 var apiModeBadge = document.getElementById("apiModeBadge");
 var demoCallout = document.getElementById("demoCallout");
+var workflowStatus = document.getElementById("workflowStatus");
 
 // ── Boot ──────────────────────────────────────────────────────
 setApiMode();
@@ -35,6 +39,7 @@ restorePreferences();
 loadSessions();
 startNewSession();
 setupToneButtons();
+setupWorkflowButtons();
 setupInput();
 setupPromptChips();
 setupKeyboardShortcuts();
@@ -60,6 +65,7 @@ function startNewSession() {
   state.currentSessionId = Date.now().toString();
   state.messages = [];
   state.userName = null;
+  state.workflow = "general";
   chatBox.innerHTML = "";
   hero.classList.remove("hidden");
   toneBar.classList.add("hidden");
@@ -78,6 +84,7 @@ function persistSession(firstMsg) {
     messages: state.messages.slice(),
     tone: state.tone,
     userName: state.userName,
+    workflow: state.workflow,
     updatedAt: Date.now(),
   };
   if (idx >= 0) {
@@ -94,11 +101,13 @@ function loadSession(session) {
   state.messages = (session.messages || []).slice();
   state.tone = session.tone || "soft";
   state.userName = session.userName || null;
+  state.workflow = normalizeWorkflow(session.workflow || "general");
 
   chatBox.innerHTML = "";
   hero.classList.add("hidden");
   toneBar.classList.remove("hidden");
   syncToneButtons(state.tone);
+  syncWorkflowButtons(state.workflow);
   document.body.dataset.tone = state.tone;
 
   state.messages.forEach(function(msg) {
@@ -306,48 +315,7 @@ function setApiMode(mode) {
       : "This demo uses a local mock response engine.";
   }
   if (demoCallout) demoCallout.hidden = state.apiMode === "live";
-}
-
-function shouldUseMockChat() {
-  return state.apiMode === "demo";
-}
-
-function demoReply(message) {
-  var lower = message.toLowerCase();
-  var name = state.userName ? state.userName + ", " : "";
-  var opener = {
-    soft: name + "I hear you. Let's slow it down and turn this into something you can actually move through.",
-    sassy: name + "okay, let's get you unstuck because this does not get to run the show.",
-    pro: name + "let's make this practical. The goal is to reduce the fog and identify the next best action.",
-    wise: name + "there is a signal inside this situation. Let's listen for it before we rush into a fix.",
-  }[state.tone] || "Let's work through this together.";
-
-  var body = "Start with a quick reset: write down what is bothering you, what you can control today, and what can wait. Then choose one tiny action that takes less than 15 minutes so momentum has somewhere to begin.";
-
-  if (lower.includes("career") || lower.includes("job") || lower.includes("interview")) {
-    body = "For career questions, separate the choice into three pieces: what role you want next, what proof you can show, and what gap you can close this week. A strong next step would be updating one portfolio blurb, practicing one interview story, or reaching out to one person connected to the role.";
-  } else if (lower.includes("burn") || lower.includes("overwhelm") || lower.includes("stress") || lower.includes("anxious")) {
-    body = "When everything feels loud, pick one anchor: food, water, sleep, a short walk, or a single task. If the stress feels unsafe or unmanageable, it is worth bringing in a trusted person or professional support. You deserve help that is bigger than a browser tab.";
-  } else if (lower.includes("procrast") || lower.includes("habit") || lower.includes("routine")) {
-    body = "Make the habit almost too easy to dodge: two minutes, same place, same trigger. Track the start, not perfection. The win is teaching your brain, 'I am the kind of person who begins.'";
-  } else if (lower.includes("relationship") || lower.includes("difficult person") || lower.includes("boundary")) {
-    body = "Try naming the pattern without attacking the person: 'When this happens, I feel this, and I need this going forward.' A clean boundary is specific, calm, and attached to what you will do next if it keeps happening.";
-  } else if (lower.includes("money") || lower.includes("saving") || lower.includes("budget")) {
-    body = "A simple money reset is: list the fixed bills, decide a weekly spending number, automate even a tiny savings amount, and review it once a week. You do not need a perfect system; you need one you will actually look at.";
-  } else if (lower.includes("creative") || lower.includes("brainstorm") || lower.includes("project")) {
-    body = "Give yourself three lanes: useful, beautiful, and weird. Write five ideas in each lane, then pick the one that makes you curious enough to prototype it tonight.";
-  } else if (lower.includes("decision") || lower.includes("choice")) {
-    body = "Use a 3-part decision check: what aligns with your values, what creates the best future options, and what you would advise a friend to do. If one answer keeps appearing across all three, that is your clue.";
-  }
-
-  var closer = {
-    soft: "What part of this feels heaviest right now?",
-    sassy: "Now tell me which part we are handling first.",
-    pro: "What outcome would make the next 24 hours feel successful?",
-    wise: "What is the smallest honest step you can take from here?",
-  }[state.tone] || "Where should we start?";
-
-  return opener + "\n\n" + body + "\n\n" + closer;
+  updateStatusPanel();
 }
 
 // ── Stream reply ───────────────────────────────────────────────
@@ -360,7 +328,12 @@ async function streamReply() {
   try {
     if (isStaticDemoHost()) {
       typing.classList.add("hidden");
-      var demo = demoReply(state.messages[state.messages.length - 1].content);
+      var demo = createDemoReply({
+        message: state.messages[state.messages.length - 1].content,
+        tone: state.tone,
+        userName: state.userName,
+        workflow: state.workflow,
+      });
       await renderStreamingText(demo);
       state.messages.push({ role: "assistant", content: demo });
       return;
@@ -373,6 +346,7 @@ async function streamReply() {
         messages: state.messages.slice(-MAX_HISTORY),
         tone: state.tone,
         userName: state.userName,
+        workflow: state.workflow,
         stream: true,
       }),
     });
@@ -398,7 +372,12 @@ async function streamReply() {
   } catch (err) {
     typing.classList.add("hidden");
     setApiMode("demo");
-    var fallback = demoReply(state.messages[state.messages.length - 1].content);
+    var fallback = createDemoReply({
+      message: state.messages[state.messages.length - 1].content,
+      tone: state.tone,
+      userName: state.userName,
+      workflow: state.workflow,
+    });
     await renderStreamingText(fallback);
     state.messages.push({ role: "assistant", content: fallback });
     showToast("Switched to demo replies");
@@ -524,11 +503,47 @@ function autoResize() {
 function setupPromptChips() {
   document.querySelectorAll(".prompt-chip").forEach(function(chip) {
     chip.onclick = function() {
+      if (chip.dataset.workflow) {
+        state.workflow = normalizeWorkflow(chip.dataset.workflow);
+        syncWorkflowButtons(state.workflow);
+      }
       input.value = chip.dataset.prompt;
       input.focus();
       autoResize();
     };
   });
+}
+
+function setupWorkflowButtons() {
+  document.querySelectorAll("[data-workflow]").forEach(function(btn) {
+    btn.onclick = function() {
+      state.workflow = normalizeWorkflow(btn.dataset.workflow);
+      syncWorkflowButtons(state.workflow);
+      var template = WORKFLOWS[state.workflow] && WORKFLOWS[state.workflow].prompt;
+      if (template) {
+        input.value = template;
+        input.focus();
+        autoResize();
+      }
+    };
+  });
+  syncWorkflowButtons(state.workflow);
+}
+
+function syncWorkflowButtons(workflow) {
+  state.workflow = normalizeWorkflow(workflow);
+  document.querySelectorAll("[data-workflow]").forEach(function(btn) {
+    var active = btn.dataset.workflow === state.workflow;
+    btn.classList.toggle("active", active);
+    btn.setAttribute("aria-pressed", String(active));
+  });
+  updateStatusPanel();
+}
+
+function updateStatusPanel() {
+  if (!workflowStatus) return;
+  var workflow = WORKFLOWS[state.workflow] || WORKFLOWS.general;
+  workflowStatus.textContent = workflow.label + " · " + (state.apiMode === "live" ? "Serverless API" : "Mock demo engine");
 }
 
 // ── Keyboard shortcuts ─────────────────────────────────────────
@@ -589,8 +604,12 @@ function exportChat() {
 
   var lines = [
     "# BlossomAI Conversation",
-    "Date: " + new Date().toLocaleDateString(),
+    "Exported: " + new Date().toLocaleString(),
+    "Session: " + state.currentSessionId,
     "Tone: " + (TONE_LABELS[state.tone] || state.tone),
+    "Workflow: " + ((WORKFLOWS[state.workflow] && WORKFLOWS[state.workflow].label) || "Open Chat"),
+    "Mode: " + (state.apiMode === "live" ? "Serverless API" : "Mock demo engine"),
+    "Messages: " + state.messages.length,
     "",
   ];
 
